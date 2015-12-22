@@ -10,33 +10,35 @@ import numpy as np
 
 class ley_electoral(object):
     
-    def __init__ (self, votos, representantes, metodo='DHont', corte=0.03):
+    def __init__ (self, votes, representatives, ham='DHont', corte=0.03):
         
-                #self.info = basic_info()
-        self.votes=votos
+        #self.info = basic_info()
+        self.votes=votes
         self.total_votes=0
         
         for i in self.votes:
             self.total_votes+=i
         
-        self.representatives=representantes
-        self.ham=metodo #Highest avarage method
+        self.representatives=representatives
+        self.ham=ham                                    #Highest avarage method
         self.minratio=corte
-        self.threshold=self.total_votes*self.minratio
         
+        self.VoteCalcs()
+        self.HamSelection()
+        self.ElectedCalc()
+
+        
+    def VoteCalcs(self):
+        self.threshold=self.total_votes*self.minratio
         self.valid_votes=np.array([score for score in self.votes if score>=self.threshold])
         self.chart=np.zeros((self.valid_votes.size,self.representatives))
+        
+    def HamSelection(self):
         
         if self.ham=='DHont':
             self.DHont()
         elif self.ham=='Sainte_Lague':
             self.Sainte_Lague()
-        
-        self.elected=np.argsort(-self.chart, axis=None)
-        
-        self.elected=(self.elected[:self.representatives])
-        self.elected[:]=np.uint8(self.elected[:]/self.representatives)
-        
         
     def DHont(self):
         #
@@ -51,3 +53,12 @@ class ley_electoral(object):
         #
         for j in xrange(self.representatives):
             self.chart[:,j]=self.valid_votes[:]/(2*j+1)
+            
+    def ElectedCalc(self):
+        
+        sorted_chart=np.argsort(-self.chart, axis=None)
+        elected_chart=(sorted_chart[:self.representatives])
+        self.elected=np.uint8(elected_chart[:]/self.representatives)
+        
+        
+        
