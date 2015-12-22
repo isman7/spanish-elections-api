@@ -29,7 +29,7 @@ LIST_OF_CHAMBERS = ['congreso',
 # orderen decereciente en tamaño:
 
                     
-LIST_OF_DISTRICS = {u'Madrid':                  'madrid/madrid',
+DICT_OF_DISTRICS = {u'Madrid':                  'madrid/madrid',
                     u'Barcelona':               'catalunya/barcelona',
                     u'Valencia':                'comunitat-valencia/valencia',
                     u'Alicante':                'comunitat-valencia/alicantealacant',
@@ -101,20 +101,20 @@ class api_client(object):
     
     """    
     def get_result_by_district(self):
-        
-        final_URL = self.info.base_URL + self.info.tipo_eleccion + '/' + self.info.fecha + '.json'
-        get_json = requests.get(final_URL)
-        self.results = json.loads(get_json.content)
-        return self.results
+        return 1
 
     def get_results_by_party(self):
+        return 1
+        
+        
+    def get_results_all_districts(self):
         
         final_URL = self.info.base_URL + self.info.tipo_eleccion + '/' + self.info.fecha + '.json'
         get_json = requests.get(final_URL)
         self.results = json.loads(get_json.content)
         return self.results
 
-    def get_results_all_districts(self):
+    def get_results_all_parties(self):
         
         final_URL = self.info.base_URL + self.info.tipo_eleccion + '/' + self.info.fecha + '.json'
         get_json = requests.get(final_URL)
@@ -157,6 +157,7 @@ class analyzer(object):
         
         self.info = basic_info()
         self.api_client = api_client(info = self.info)
-        self.results = self.api_client.get_results_all_parties()
-        self.districts = self.api_client.get_results_all_districts()
+        self.districts = self.api_client.get_results_all_districts()        
+        self.parties = self.api_client.get_results_all_parties()
+        
         
