@@ -8,7 +8,24 @@ Created on Mon Dec 21 16:58:23 2015
 import requests
 import json
 
-BASE_URL = u'http://elecciones.eldiario.es/'    
+BASE_URL = u'http://elecciones.eldiario.es/'
+
+LIST_OF_ELECTIONS = ['junio-1977',
+                     'marzo-1979',
+                     'octubre-1982',
+                     'junio-1986',
+                     'octubre-1989',
+                     'junio-1993',
+                     'marzo-1996',
+                     'marzo-2000',
+                     'marzo-2004',
+                     'marzo-2008',
+                     'noviembre-2011',
+                     'diciembre-2015']
+                     
+LIST_OF_CHAMBERS = ['congreso',
+                    'senado']
+
 
 class basic_info(object):
     
@@ -20,8 +37,26 @@ class basic_info(object):
 
 
 class api_client(object):
+    """
+    api_client: will download all data related with the elections that are defined at
+    the info of the analyzer object. 
     
-    def get_results(self):
+    """    
+    def get_result_by_district(self):
+        
+        final_URL = self.info.base_URL + self.info.tipo_eleccion + '/' + self.info.fecha + '.json'
+        get_json = requests.get(final_URL)
+        self.results = json.loads(get_json.content)
+        return self.results
+
+    def get_results_by_party(self):
+        
+        final_URL = self.info.base_URL + self.info.tipo_eleccion + '/' + self.info.fecha + '.json'
+        get_json = requests.get(final_URL)
+        self.results = json.loads(get_json.content)
+        return self.results
+
+    def get_results_all_districts(self):
         
         final_URL = self.info.base_URL + self.info.tipo_eleccion + '/' + self.info.fecha + '.json'
         get_json = requests.get(final_URL)
@@ -64,6 +99,6 @@ class analyzer(object):
         
         self.info = basic_info()
         self.api_client = api_client(info = self.info)
-        self.results = self.api_client.get_results_by_party()
-        self.districts = self.api_client.get_results_by_districts()
+        self.results = self.api_client.get_results_all_parties()
+        self.districts = self.api_client.get_results_all_districts()
         
