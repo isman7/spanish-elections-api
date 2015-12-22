@@ -10,6 +10,25 @@ import json
 
 BASE_URL = u'http://elecciones.eldiario.es/'    
 
+class basic_info():
+    
+    def __init__(self):
+        
+        self.type = ''
+        self.description = ''
+        
+
+
+class party(object):
+    
+    def __init__(self):
+        self.info = basic_info()
+        
+class district(object): 
+    
+    def __init__(self)    :
+        self.info = basic_info()
+    
 class results(object):
     
     def get_results(self):
@@ -30,3 +49,10 @@ class results(object):
         self.results = self.get_results()
         
 
+class analyzer(object):
+    
+    def __init__(self):
+        
+        self.info = basic_info()
+        self.results = [results()]
+        
