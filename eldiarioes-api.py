@@ -16,7 +16,15 @@ class basic_info(object):
         self.type = ''
         self.description = ''
         
-
+class district(object): 
+    
+    def __init__(self):
+        self.info = basic_info()
+        
+class party(object):
+    
+    def __init__(self):
+        self.info = basic_info()
 
 class api_client(object):
     """
@@ -39,7 +47,7 @@ class api_client(object):
                                   LIST_OF_CHAMBERS[0],
                                   LIST_OF_ELECTIONS[-1],
                                   DICT_OF_DISTRICTS[district]]) + '.' + FILE_API[0]
-            print local_URL
+            #print local_URL
             districts.append(json.loads(requests.get(local_URL).content))
         
         self.old_districts = districts                          
@@ -50,34 +58,8 @@ class api_client(object):
 
     def __init__(self, info=basic_info()):
         self.info = info
-        
+            
 
-
-class party(object):
-    
-    def __init__(self):
-        self.info = basic_info()
-        
-class district(object): 
-    
-    def __init__(self):
-        self.info = basic_info()
-    
-class results(object):
-    
-    
-    
-    def __init__(self):
-        
-        self.base_URL = BASE_URL
-        self.tipo_eleccion = u'congreso'
-        self.fecha = u'diciembre-2015'
-        self.comnidad_autonoma = ''
-        self.provincia = ''
-        self.municipio = ''
-        self.results = self.get_results()
-        
-     
 class analyzer(object):
     
     def __init__(self):
