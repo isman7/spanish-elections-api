@@ -10,12 +10,26 @@ import json
 
 BASE_URL = u'http://elecciones.eldiario.es/'    
 
-class basic_info():
+class basic_info(object):
     
     def __init__(self):
         
         self.type = ''
         self.description = ''
+        
+
+
+class api_client(object):
+    
+    def get_results(self):
+        
+        final_URL = self.info.base_URL + self.info.tipo_eleccion + '/' + self.info.fecha + '.json'
+        get_json = requests.get(final_URL)
+        self.results = json.loads(get_json.content)
+        return self.results
+
+    def __init__(self, info=basic_info()):
+        self.info = info
         
 
 
@@ -26,17 +40,12 @@ class party(object):
         
 class district(object): 
     
-    def __init__(self)    :
+    def __init__(self):
         self.info = basic_info()
     
 class results(object):
     
-    def get_results(self):
-        
-        final_URL = self.base_URL + self.tipo_eleccion + '/' + self.fecha + '.json'
-        get_json = requests.get(final_URL)
-        self.results = json.loads(get_json.content)
-        return self.results
+    
     
     def __init__(self):
         
@@ -48,11 +57,13 @@ class results(object):
         self.municipio = ''
         self.results = self.get_results()
         
-
+     
 class analyzer(object):
     
     def __init__(self):
         
         self.info = basic_info()
-        self.results = [results()]
+        self.api_client = api_client(info = self.info)
+        self.results = self.api_client.get_results_by_party()
+        self.districts = self.api_client.get_results_by_districts()
         
