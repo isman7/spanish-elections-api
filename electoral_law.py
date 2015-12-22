@@ -44,15 +44,15 @@ class ley_electoral(object):
         #
         # D'Hont highest avarage method
         #
-        for j in xrange(self.representatives):
-            self.chart[:,j]=self.valid_votes[:]/(j+1)
+        for i in xrange(self.representatives):
+            self.chart[:,i]=self.valid_votes[:]/(i+1)
 
     def Sainte_Lague(self):
         #
         #  Sainte-Laguë Highest avarage method, 
         #
-        for j in xrange(self.representatives):
-            self.chart[:,j]=self.valid_votes[:]/(2*j+1)
+        for i in xrange(self.representatives):
+            self.chart[:,i]=self.valid_votes[:]/(2*i+1)
             
     def ElectedCalc(self):
         
