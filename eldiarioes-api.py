@@ -34,8 +34,8 @@ LIST_OF_CHAMBERS = ['congreso',
                     
 DICT_OF_DISTRICTS =    {u'Madrid':                  'madrid/madrid',
                         u'Barcelona':               'catalunya/barcelona',
-                        u'Valencia':                'comunitat-valencia/valencia',
-                        u'Alicante':                'comunitat-valencia/alicantealacant',
+                        u'Valencia':                'comunitat-valenciana/valencia',
+                        u'Alicante':                'comunitat-valenciana/alicantealacant',
                         u'Sevilla':                 'andalucia/sevilla',
                         u'Málaga':                  'andalucia/malaga',
                         u'Cádiz':                   'andalucia/cadiz',
@@ -57,17 +57,17 @@ DICT_OF_DISTRICTS =    {u'Madrid':                  'madrid/madrid',
                         u'Badajoz':                 'extremadura/badajoz',
                         u'Jaén':                    'andalucia/jaen',
                         u'Navarra':                 'navarra/navarra',
-                        u'Castellón':               'comunitat-valencia/castelloncastello',
+                        u'Castellón':               'comunitat-valenciana/castelloncastello',
                         u'Cantabria':               'cantabria/cantabria',
                         u'Valladolid':              'castilla-y-leon/valladolid',
                         u'Ciudad Real':             'castilla-la-mancha/ciudad-real',
-                        u'Huelva':                  'castilla-la-mancha/huelva',
-                        u'León':                    'castilla-y-leon/león',
+                        u'Huelva':                  'andalucia/huelva',
+                        u'León':                    'castilla-y-leon/leon',
                         u'Lleida':                  'catalunya/lleida',
                         u'Cáceres':                 'extremadura/caceres',
                         u'Albacete':                'castilla-la-mancha/albacete',
                         u'Burgos':                  'castilla-y-leon/burgos',
-                        u'Salamanca':               'castilla-y-leon/salamanca/',
+                        u'Salamanca':               'castilla-y-leon/salamanca',
                         u'Lugo':                    'galicia/lugo',
                         u'Ourense':                 'galicia/ourense',
                         u'La Rioja':                'la-rioja/la-rioja',
@@ -115,10 +115,10 @@ class api_client(object):
         districts = []
         for district in DICT_OF_DISTRICTS:
             local_URL = '/'.join([BASE_URL,
-                                  self.info.tipo_eleccion,
-                                  DICT_OF_DISTRICTS[district],
-                                  LIST_OF_ELECTIONS[-1]]) + '.' + FILE_API[0]
-            
+                                  LIST_OF_CHAMBERS[0],
+                                  LIST_OF_ELECTIONS[-1],
+                                  DICT_OF_DISTRICTS[district]]) + '.' + FILE_API[0]
+            print local_URL
             districts.append(json.loads(requests.get(local_URL).content))
                                   
         return districts
