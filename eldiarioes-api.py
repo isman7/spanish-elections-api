@@ -17,6 +17,26 @@ class basic_info(object):
         
     def __repr__(self):
         return 'Info Object for eldiarioes-api'
+    def __str__(self):
+        output = str(self.__repr__) + '\n\n'
+        
+        # Formating the dict printing fuction, isoliting 'name' property:        
+        next_line = ': '.join(['Name', self.name])
+        output = '\n'.join([output, next_line])
+        for prop, value in self.__dict__.iteritems():
+            #print prop, value            
+            if prop is not 'name':
+                prop = ' '.join(prop.split('_'))
+                if isinstance(value, dict):
+                    acc_keys = ''
+                    for key, elem  in value.iteritems():
+                        acc_keys = ', '.join([acc_keys, key])
+                    next_line = ': '.join([prop, acc_keys[1:]])
+                else:         
+                    next_line = ': '.join([prop, str(value)])
+                output = '\n'.join([output, next_line]) 
+            
+        return output
 
 class party(object):
     
@@ -52,12 +72,13 @@ class api_client(object):
     def get_results_all_districts(self):
         
         districts = []
-        for local_district in DICT_OF_DISTRICTS:
-            local_URL = '/'.join([BASE_URL,
-                                  LIST_OF_CHAMBERS[0],
-                                  LIST_OF_ELECTIONS[-1],
-                                  DICT_OF_DISTRICTS[local_district]]) + '.' + FILE_API[0]
-            #print local_URL
+        for local_district in self.info.List_of_districts:
+            local_URL = '/'.join([self.info.API_URL,
+                                  self.info.List_of_chambers,
+                                  self.info.List_of_elections,
+                                  self.info.List_of_districts[local_district]])
+            local_URL = '.'.join([local_URL, FILE_API[0]])
+            print local_URL
             local_json = json.loads(requests.get(local_URL).content)                      
             districts.append(district(local_district, local_json))
         
@@ -76,13 +97,27 @@ class api_client(object):
 
 class analyzer(object):
     
-    def __init__(self):
-        
-        self.info = basic_info('', {})
+    def __init__(self, 
+                 name = 'Spanish election analyzer',
+                 base_url = BASE_URL,
+                 chamber = LIST_OF_CHAMBERS[0],
+                 elections = LIST_OF_ELECTIONS[-1],
+                 districts = DICT_OF_DISTRICTS):
+        properties = {'API_URL': base_url,
+                      'List_of_chambers': chamber,
+                      'List_of_elections': elections,
+                      'List_of_districts': districts,
+                      'Number_of_districts': len(districts)}
+        self.info = basic_info(name, properties)
         self.api_client = api_client(info = self.info)
         self.districts = self.api_client.get_results_all_districts()        
         self.parties = self.api_client.get_results_all_parties()
         
     def __repr__(self):
         return 'Analyzer Object for eldiarioes-api'
+        
+    def __str__(self):
+        output = str(self.__repr__) + '\n'
+        output += str(self.info)
+        return output
         
