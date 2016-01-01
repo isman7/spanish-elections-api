@@ -14,17 +14,26 @@ class basic_info(object):
     def __init__(self, name, input_dict):
         self.__dict__ = input_dict
         self.name = name
+        
+    def __repr__(self):
+        return 'Info Object for eldiarioes-api'
 
 class party(object):
     
     def __init__(self):
         self.info = basic_info('', {})        
+    
+    def __repr__(self):
+        return 'Party Object for eldiarioes-api'
         
 class district(object): 
     
     def __init__(self, name, decoded_json):
         #print decoded_json
         self.info = basic_info(name, decoded_json[u'Informaci\xf3n general:'])
+    
+    def __repr__(self):
+        return 'Distric Object for eldiarioes-api'
 
 
 class api_client(object):
@@ -60,6 +69,9 @@ class api_client(object):
 
     def __init__(self, info=basic_info('', {})):
         self.info = info
+    
+    def __repr__(self):
+        return 'Client for making request to JSON api'
             
 
 class analyzer(object):
@@ -71,4 +83,6 @@ class analyzer(object):
         self.districts = self.api_client.get_results_all_districts()        
         self.parties = self.api_client.get_results_all_parties()
         
+    def __repr__(self):
+        return 'Analyzer Object for eldiarioes-api'
         
