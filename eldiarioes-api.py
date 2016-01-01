@@ -18,7 +18,7 @@ class basic_info(object):
     def __repr__(self):
         return 'Info Object for eldiarioes-api'
     def __str__(self):
-        output = str(self.__repr__) + '\n\n'
+        output = ''
         
         # Formating the dict printing fuction, isoliting 'name' property:        
         next_line = ': '.join(['Name', self.name])
@@ -53,7 +53,7 @@ class district(object):
         self.info = basic_info(name, decoded_json[u'Informaci\xf3n general:'])
     
     def __repr__(self):
-        return 'Distric Object for eldiarioes-api'
+        return 'District results of ' + self.info.name 
 
 
 class api_client(object):
@@ -82,7 +82,7 @@ class api_client(object):
             local_json = json.loads(requests.get(local_URL).content)                      
             districts.append(district(local_district, local_json))
         
-        self.old_districts = districts                          
+        self.old_districts = districts  # TODO converting it in files or DB                        
         return districts
 
     def get_results_all_parties(self):
@@ -117,7 +117,5 @@ class analyzer(object):
         return 'Analyzer Object for eldiarioes-api'
         
     def __str__(self):
-        output = str(self.__repr__) + '\n'
-        output += str(self.info)
-        return output
+        return str(self.info)
         
