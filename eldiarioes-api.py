@@ -11,20 +11,21 @@ from constants import *
 
 class basic_info(object):
     
-    def __init__(self):
-        
-        self.type = ''
-        self.description = ''
-        
-class district(object): 
-    
-    def __init__(self):
-        self.info = basic_info()
-        
+    def __init__(self, name, input_dict):
+        self.__dict__ = input_dict
+        self.name = name
+
 class party(object):
     
     def __init__(self):
-        self.info = basic_info()
+        self.info = basic_info('', {})        
+        
+class district(object): 
+    
+    def __init__(self, name, decoded_json):
+        #print decoded_json
+        self.info = basic_info(name, decoded_json[u'Informaci\xf3n general:'])
+
 
 class api_client(object):
     """
@@ -42,13 +43,14 @@ class api_client(object):
     def get_results_all_districts(self):
         
         districts = []
-        for district in DICT_OF_DISTRICTS:
+        for local_district in DICT_OF_DISTRICTS:
             local_URL = '/'.join([BASE_URL,
                                   LIST_OF_CHAMBERS[0],
                                   LIST_OF_ELECTIONS[-1],
-                                  DICT_OF_DISTRICTS[district]]) + '.' + FILE_API[0]
+                                  DICT_OF_DISTRICTS[local_district]]) + '.' + FILE_API[0]
             #print local_URL
-            districts.append(json.loads(requests.get(local_URL).content))
+            local_json = json.loads(requests.get(local_URL).content)                      
+            districts.append(district(local_district, local_json))
         
         self.old_districts = districts                          
         return districts
@@ -56,7 +58,7 @@ class api_client(object):
     def get_results_all_parties(self):
         return 1
 
-    def __init__(self, info=basic_info()):
+    def __init__(self, info=basic_info('', {})):
         self.info = info
             
 
@@ -64,7 +66,7 @@ class analyzer(object):
     
     def __init__(self):
         
-        self.info = basic_info()
+        self.info = basic_info('', {})
         self.api_client = api_client(info = self.info)
         self.districts = self.api_client.get_results_all_districts()        
         self.parties = self.api_client.get_results_all_parties()

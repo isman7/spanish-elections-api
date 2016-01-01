@@ -79,6 +79,6 @@ DICT_OF_DISTRICTS =    {u'Madrid':                  'madrid/madrid',
                         u'Teruel':                  'aragon/teruel',
                         u'Soria':                   'castilla-y-leon/soria',
                         u'Ceuta':                   'ceuta/ceuta',
-                        u'Melilla':                 'melilla/melilla'
+                        #u'Melilla':                 'melilla/melilla'
                         }
 
