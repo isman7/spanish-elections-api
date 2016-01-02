@@ -40,28 +40,31 @@ class basic_info(object):
 
 class party(object):
     
-    def __init__(self):
-        self.info = basic_info('', {})        
-    
+    def __init__(self, name, party_result):
+        self.info = basic_info(name, {u'Complete_Name': party_result[u'Nombre completo']})        
+        self.votes = long(party_result['Votos'])
     def __repr__(self):
         return 'Party Object for eldiarioes-api'
+    def __str__(self):
+        return ': '.join([self.info.name, str(self.votes)])
         
 class district(object): 
     
     def __init__(self, name, decoded_json):
         #print decoded_json
         self.info = basic_info(name, decoded_json[u'Informaci\xf3n general:'])
-        self.results = decoded_json[u'Escrutinio']
-        
+        results = []
+        for name, party_result in decoded_json[u'Escrutinio'].iteritems():
+            results.append(party(name, party_result))
+        self.results = results
         
     def __repr__(self):
         return 'District results of ' + self.info.name
     
     def __str__(self):
         output = 'District results of ' + self.info.name
-        for party, result in self.results.iteritems():
-            result_line = ':\t\t'.join([party, result['Votos']])            
-            output = '\n'.join([output, result_line])
+        for party in self.results:
+            output = '\n'.join([output, str(party)])
         return output
 
 
