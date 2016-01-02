@@ -7,7 +7,7 @@ Created on Mon Dec 21 16:58:23 2015
 
 import requests
 import json
-from constants import *
+from constants import * #TODO passing to ConfigParser object
 
 class basic_info(object):
     
