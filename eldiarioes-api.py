@@ -51,9 +51,19 @@ class district(object):
     def __init__(self, name, decoded_json):
         #print decoded_json
         self.info = basic_info(name, decoded_json[u'Informaci\xf3n general:'])
-    
+        self.results = decoded_json[u'Escrutinio']
+        
+        
     def __repr__(self):
-        return 'District results of ' + self.info.name 
+        return 'District results of ' + self.info.name
+    
+    def __str__(self):
+        output = 'District results of ' + self.info.name
+        for party, result in self.results.iteritems():
+            result_line = ':\t\t'.join([party, result['Votos']])            
+            output = '\n'.join([output, result_line])
+        return output
+
 
 
 class api_client(object):
