@@ -53,6 +53,9 @@ class electoral_system(object):
 
         
     def VoteCalcs(self):
+        #
+        # Generate arrays from valid votes (>cut)
+        #
         if self.minratio==0:
             self.threshold=0
         else:
@@ -61,7 +64,9 @@ class electoral_system(object):
         self.chart=np.zeros((self.valid_votes.size,self.representatives))
         
     def HamSelection(self):
-        
+        #
+        # Calls the chosen ham method
+        #
         if self.ham=='DHont':
             self.DHont()
         elif self.ham=='Sainte_Lague':
@@ -76,13 +81,17 @@ class electoral_system(object):
 
     def Sainte_Lague(self):
         #
-        #  Sainte-Laguë Highest avarage method, 
+        # Sainte-Laguë Highest avarage method, 
         #
         for i in xrange(self.representatives):
             self.chart[:,i]=self.valid_votes[:]/(2*i+1)
             
     def ElectedCalc(self):
-        
+        #
+        # Sorts chart and cuts it to the number of representatives, then
+        # creates an array of the party assigned to each representative
+        # as ordered in the votes array.
+        #
         sorted_chart=np.argsort(-self.chart, axis=None)
         elected_chart=(sorted_chart[:self.representatives])
         self.elected=np.uint8(elected_chart[:]/self.representatives)
